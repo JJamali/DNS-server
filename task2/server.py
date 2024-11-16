@@ -20,7 +20,6 @@ def build_response(query):
 
 def main():
     HOST, PORT = '127.0.0.1', 10053
-    print(str(PORT) + "\n")
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as server_socket:
         server_socket.bind((HOST, PORT))
         while True:
