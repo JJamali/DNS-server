@@ -35,6 +35,7 @@ def serve_client(client_socket):
     if status == 200 and file_path:
         with open(file_path, 'rb') as f:
             client_socket.sendall(f.read())
+    client_socket.close()
 
 def main():
     HOST, PORT = '127.0.0.1', 6789
