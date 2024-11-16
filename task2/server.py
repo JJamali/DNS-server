@@ -24,10 +24,15 @@ def main():
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as server_socket:
         server_socket.bind((HOST, PORT))
         while True:
-            query, addr = server_socket.recvfrom(512)
-            print("Request:", query.hex())
+            query, addr = server_socket.recvfrom(512)            
+            # Format the query to display it as octets (space between every 2 characters)
+            query_octets = ' '.join(f'{byte:02x}' for byte in query)
+            print("Request:", query_octets)
+
             response = build_response(query)
-            print("Response:", response.hex())
+            # Format the response to display it as octets (space between every 2 characters)
+            response_octets = ' '.join(f'{byte:02x}' for byte in response)
+            print("Response:", response_octets)
             server_socket.sendto(response, addr)
 
 if __name__ == "__main__":

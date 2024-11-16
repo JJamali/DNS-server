@@ -23,7 +23,8 @@ def main():
             query = build_query(domain_name)
             client_socket.sendto(query, (HOST, PORT))
             response, _ = client_socket.recvfrom(512)
-            print("Response:", response.hex())
+            response_octets = ' '.join(f'{byte:02x}' for byte in response)
+            print("Response:", response_octets)
 
 if __name__ == "__main__":
     main()
