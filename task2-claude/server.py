@@ -57,8 +57,8 @@ def main():
             query, addr = sock.recvfrom(4096)
             response = handle_dns_query(query)
             sock.sendto(response, addr)
-            print(f"Request:\n{query.hex()}")
-            print(f"Response:\n{response.hex()}")
+            print(f"Request:\n{' '.join([f'{b:02x}' for b in query])}")
+            print(f"Response:\n{' '.join([f'{b:02x}' for b in response])}")
 
 if __name__ == "__main__":
     main()

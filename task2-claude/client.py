@@ -49,7 +49,7 @@ def main():
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
         sock.connect(('127.0.0.1', 10000))
         while True:
-            domain_name = input("> Enter Domain Name: ")
+            domain_name = input("Enter Domain Name: ")
             if domain_name.lower() == "end":
                 print("Session ended")
                 break
