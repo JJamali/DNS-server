@@ -22,6 +22,9 @@ def handle_dns_query(query):
         header_response = struct.pack('!HHHHHH', header[0], 0x8183, 0x0001, 0x0000, 0x0000, 0x0000)
         return header_response + query[12:]
 
+    # Set the TTL based on the domain
+    ttl = 260 if qname == "google.com" else 160
+
     # Normal response
     header_response = struct.pack('!HHHHHH', header[0], 0x8180, 0x0001, len(DOMAIN_IP_MAP[qname]), 0x0000, 0x0000)
     qname_response = b''.join(struct.pack('B', len(part)) + part.encode() for part in qname.split('.')) + b'\x00'
@@ -29,10 +32,11 @@ def handle_dns_query(query):
 
     for ip_address in DOMAIN_IP_MAP[qname]:
         answer_section += qname_response
-        answer_section += struct.pack('!HHIH', 0x0001, 0x0001, 260, 4)  # Type A, Class IN, TTL, RDLENGTH
+        answer_section += struct.pack('!HHIH', 0x0001, 0x0001, ttl, 4)  # Type A, Class IN, TTL, RDLENGTH
         answer_section += b''.join(int(b).to_bytes(1, 'big') for b in ip_address.split('.'))
 
     return header_response + query[12:] + answer_section
+
 
 def read_name(message, offset):
     """Decode a DNS name."""
