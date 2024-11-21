@@ -1,10 +1,12 @@
 import socket
 import struct
+import random
 
 # Helper functions
 def create_dns_query(domain_name):
     """Construct the DNS query message."""
-    header = struct.pack('!HHHHHH', 0x1a2b, 0x0100, 0x0001, 0x0000, 0x0000, 0x0000)  # ID, flags, QDCOUNT, ANCOUNT, NSCOUNT, ARCOUNT
+    random_id = random.randint(0, 65535)  # Generate a random 16-bit ID
+    header = struct.pack('!HHHHHH', random_id, 0x0100, 0x0001, 0x0000, 0x0000, 0x0000)
     qname_parts = domain_name.split('.')
     qname = b''.join(struct.pack('B', len(part)) + part.encode() for part in qname_parts) + b'\x00'
     query = header + qname + struct.pack('!HH', 0x0001, 0x0001)  # Type A, Class IN
