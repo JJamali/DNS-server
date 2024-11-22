@@ -3,6 +3,9 @@ import os
 from datetime import datetime
 
 def generate_headers(status_code, file_path=None):
+    """
+    Generate HTTP headers based on the status code and optional file path.
+    """
     headers = {
         "Connection": "keep-alive", # Persistent HTML
         "Date": datetime.utcnow().strftime("%a, %d %b %Y %H:%M:%S GMT"),
@@ -27,6 +30,10 @@ def handle_request(request):
     return 200, "OK", file_path
 
 def serve_client(client_socket):
+    """
+    Handles an HTTP request from a client, generates an appropriate response, 
+    and sends it back to the client.
+    """
     request = client_socket.recv(1024).decode('utf-8')
     status, message, file_path = handle_request(request)
     headers = generate_headers(status, file_path)

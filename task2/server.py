@@ -23,7 +23,7 @@ def handle_dns_query(query):
         return header_response + query[12:]
 
     # Set the TTL based on the domain
-    ttl = 260 if qname == "google.com" else 160
+    ttl = 260 if qname == "google.com" else 160 # As defined in lab manual
 
     # Normal response
     header_response = struct.pack('!HHHHHH', header[0], 0x8180, 0x0001, len(DOMAIN_IP_MAP[qname]), 0x0000, 0x0000)
@@ -39,7 +39,11 @@ def handle_dns_query(query):
 
 
 def read_name(message, offset):
-    """Decode a DNS name."""
+    """Decode a DNS name.
+    
+    The DNS name is decoded by reading length-prefixed labels until a zero-length
+    label is encountered, which marks the end of the name. Each label is decoded
+    and joined with dots to form the full domain name."""
     parts = []
     while True:
         length = message[offset]
@@ -53,7 +57,7 @@ def main():
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
         sock.bind(('127.0.0.1', 10000))
         print("Server listening on port 10000...")
-        while True:
+        while True: # Infinite loop until user decides to quit
             query, addr = sock.recvfrom(4096)
             response = handle_dns_query(query)
             sock.sendto(response, addr)

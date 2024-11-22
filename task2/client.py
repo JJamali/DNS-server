@@ -52,7 +52,7 @@ def main():
         sock.connect(('127.0.0.1', 10000))
         while True:
             domain_name = input("Enter Domain Name: ")
-            if domain_name.lower() == "end":
+            if domain_name.lower() == "end": # End logic as defined in lab manual
                 print("Session ended")
                 break
             query = create_dns_query(domain_name)
